@@ -1,0 +1,26 @@
+
+namespace FbxLibra.CounterWeight;
+
+struct Vector3 {
+    x:double;
+    y:double;
+    z:double;
+}
+
+table Transform {
+    position: Vector3;
+    rotation: Vector3;
+    scale: Vector3;
+}
+
+table Node {
+    name: string;
+    transform: Transform;
+}
+
+
+table Hierarchy {
+    nodes: [Node];
+}
+
+root_type Hierarchy;
