@@ -1,9 +1,10 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.14)
 project(DecodeSample)
 
 # FBX SDKのインクルードディレクトリ
 include_directories($ENV{FBX_SDK_PATH}/include)
-include_directories($ENV{FLAT_BUFFERS_ROOT}/include)
+
+find_package(flatbuffers)
 
 # ソースファイルの設定
 set(SOURCE_FILES
@@ -30,6 +31,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/ignore:4099")
 # FBX SDKライブラリとリンク
 target_link_libraries(${PROJECT_NAME} libfbxsdk-md.lib libxml2-md.lib zlib-md.lib)
 
+target_link_libraries(${PROJECT_NAME}
+        flatbuffers::flatbuffers
+)
+
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} //MDd" CACHE STRING "description")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD" CACHE STRING "description")
 
@@ -37,8 +42,8 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD" CACHE STRING "descr
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
 
-add_custom_target(copy_data ALL
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/src/data/sample.hcw ${CMAKE_CURRENT_BINARY_DIR}/sample.hcw
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/data/sample.hcw $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
 
-add_dependencies(${PROJECT_NAME} copy_data)
+#add_dependencies(${PROJECT_NAME} copy_data)

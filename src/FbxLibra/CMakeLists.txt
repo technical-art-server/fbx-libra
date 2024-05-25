@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.14)
-project(EncodeSample)
+project(FbxLibra)
 
-include_directories($ENV{FBX_SDK_PATH}/include)
-
+find_package(args-parser)
 find_package(flatbuffers)
 
+# FBX SDKのインクルードディレクトリを指定
+include_directories($ENV{FBX_SDK_PATH}/include)
+
+# ソースファイルの設定
 set(SOURCE_FILES
         main.cpp
         ../data/hcw_generated.h
@@ -24,25 +27,19 @@ target_link_directories(${PROJECT_NAME}
         $<$<CONFIG:Release>:$ENV{FBX_SDK_PATH}/lib/x64/release>
 )
 
+target_link_libraries(${PROJECT_NAME}
+        args-parser::args-parser
+        flatbuffers::flatbuffers
+)
+
+
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/ignore:4099")
 
 # FBX SDKライブラリとリンク
 target_link_libraries(${PROJECT_NAME} libfbxsdk-md.lib libxml2-md.lib zlib-md.lib)
 
-target_link_libraries(${PROJECT_NAME}
-        flatbuffers::flatbuffers
-)
-
-
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} //MDd" CACHE STRING "description")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD" CACHE STRING "description")
 
-
 # C++の標準規格の指定
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
-
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/test_models/dragon.fbx $<TARGET_FILE_DIR:${PROJECT_NAME}>
-)
-
-#add_dependencies(${PROJECT_NAME} TARGET)
