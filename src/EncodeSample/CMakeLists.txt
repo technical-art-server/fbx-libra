@@ -4,7 +4,7 @@ project(EncodeSample)
 # FBX SDKのパスを設定
 
 # FBX SDKのインクルードディレクトリ
-include_directories($$ENV{FBX_SDK_PATH}/include)
+include_directories($ENV{FBX_SDK_PATH}/include)
 include_directories($ENV{FLAT_BUFFERS_ROOT}/include)
 
 # ソースファイルの設定
