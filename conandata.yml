@@ -2,5 +2,6 @@
 # To keep your changes, remove these comment lines, but the plugin won't be able to modify your requirements
 
 requirements:
+  - "gtest/1.14.0"
   - "args-parser/6.3.3"
   - "flatbuffers/24.3.25"
