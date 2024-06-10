@@ -3,6 +3,8 @@ project(FbxLibra)
 
 find_package(args-parser)
 find_package(flatbuffers)
+find_package(magic_enum)
+
 
 # FBX SDKのインクルードディレクトリを指定
 include_directories($ENV{FBX_SDK_PATH}/include)
@@ -10,7 +12,16 @@ include_directories($ENV{FBX_SDK_PATH}/include)
 # ソースファイルの設定
 set(SOURCE_FILES
         main.cpp
+        Status.h
+        FlatBufferLoader.h
+        FBXLibra.h
+        FBXLibra.cpp
         ../data/hcw_generated.h
+        CounterWeight/ICounterWeightFbxConvertable.h
+        CounterWeight/HierarchyCounterWeight.h
+        CounterWeight/HierarchyCounterWeight.cpp
+        CounterWeight/EmptyCounterWeight.h
+        CounterWeight/EmptyCounterWeight.cpp
 )
 
 # 実行ファイルを生成
@@ -30,6 +41,7 @@ target_link_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
         args-parser::args-parser
         flatbuffers::flatbuffers
+        magic_enum::magic_enum
 )
 
 

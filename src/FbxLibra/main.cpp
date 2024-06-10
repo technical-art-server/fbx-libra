@@ -1,4 +1,10 @@
 #include <args-parser/all.hpp>
+#include <memory>
+
+#include "FlatBufferLoader.h"
+#include "FBXLibra.h"
+#include "CounterWeight/HierarchyCounterWeight.h"
+#include <magic_enum/magic_enum.hpp>
 
 using namespace Args;
 
@@ -25,22 +31,53 @@ int main(int argc, char ** argv) {
         cmd.parse();
 
         if (cmd.isDefined("check")){
+            FBXLibraClient libraClient;
+
             for (const auto & value : cmd.values("check")){
-                outStream() << value << "\n";
+                int ext_pos = value.find_last_of('.');
+                if (ext_pos == std::string::npos){
+                    throw BaseException("Invalid file path.");
+                }
+                std::string ext = value.substr(ext_pos,value.size()-ext_pos);
+                // TODO: ここはファクトリークラスにする必要がある
+                EmptyCounterWeight* weight;
+                EmptyCounterWeight* fbx_weight;
+                flatbuffers::FlatBufferBuilder builder(1024);
+
+                if (ext == ".hcw"){
+                    weight = new HierarchyCounterWeight(value.c_str());
+                    fbx_weight = new HierarchyCounterWeight();
+                    fbx_weight->Convert(builder, cmd.value("-f"));
+                }else{
+                    throw BaseException("Invalid file extension.");
+                }
+
+                std::cout << "weight: " << value << std::endl;
+                std::cout << "fbx path: " << cmd.value("-f") << std::endl;
+                Status result = libraClient.Weigh<EmptyCounterWeight, HierarchyCounterWeight>(weight, fbx_weight);
+                if (result == Status::SUCCESS){
+                    std::cout << "\033[32m";
+                } else{
+                    std::cout << "\033[31m";
+                }
+                std::cout << "Hierarchy: " << magic_enum::enum_name(result) << std::endl;
+
+                delete weight;
+                delete fbx_weight;
+                builder.Clear();
             }
-            outStream() << cmd.value("-f") << "\n";
         } else if (cmd.isDefined("create")){
             for (const auto & value : cmd.values("create")){
-                outStream() << value << "\n";
+                std::cout << value << std::endl;
             }
-            outStream() << cmd.value("-f") << "\n";
+            std::cout << cmd.value("-f") << std::endl;
         }
     }
     catch (const HelpHasBeenPrintedException &){
         return 0;
     }
     catch (const BaseException & e){
-        outStream() << e.desc() << "\n";
+        std::cout << e.desc() << std::endl;
         return 1;
     }
     return 0;
