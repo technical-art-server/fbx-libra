@@ -263,7 +263,7 @@ inline void FinishSizePrefixedHierarchyBuffer(
   fbb.FinishSizePrefixed(root);
 }
 
-}  // namespace CounterWeight
+}  // namespace ICounterWeightFbxConvertable
 }  // namespace FbxLibra
 
 #endif  // FLATBUFFERS_GENERATED_HCW_FBXLIBRA_COUNTERWEIGHT_H_

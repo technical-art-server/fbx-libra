@@ -5,3 +5,4 @@ requirements:
   - "gtest/1.14.0"
   - "args-parser/6.3.3"
   - "flatbuffers/24.3.25"
+  - "magic_enum/0.9.4"
