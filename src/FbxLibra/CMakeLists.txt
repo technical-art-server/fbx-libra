@@ -10,7 +10,6 @@ include_directories($ENV{FBX_SDK_PATH}/include)
 # ソースファイルの設定
 set(SOURCE_FILES
         main.cpp
-        ../data/hcw_generated.h
 )
 
 # 実行ファイルを生成

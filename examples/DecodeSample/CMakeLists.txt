@@ -43,7 +43,7 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/data/sample.hcw $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/examples/data/sample.hcw $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
 
 #add_dependencies(${PROJECT_NAME} copy_data)

@@ -42,7 +42,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD" CACHE STRING "descr
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/test_models/dragon.fbx $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/examples/data/fbx/dragon.fbx $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
 
 #add_dependencies(${PROJECT_NAME} TARGET)
