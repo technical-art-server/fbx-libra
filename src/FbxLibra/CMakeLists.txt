@@ -16,7 +16,7 @@ set(SOURCE_FILES
         FlatBufferLoader.h
         FBXLibra.h
         FBXLibra.cpp
-        ../data/hcw_generated.h
+        ../../examples/data/hcw_generated.h
         CounterWeight/ICounterWeightFbxConvertable.h
         CounterWeight/HierarchyCounterWeight.h
         CounterWeight/HierarchyCounterWeight.cpp

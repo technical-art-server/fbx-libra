@@ -6,7 +6,7 @@
 #define ALL_HIERARCHYCOUNTERWEIGHT_H
 
 #include <fbxsdk.h>
-#include "../../data/hcw_generated.h"
+#include "../../../examples/data/hcw_generated.h"
 #include "ICounterWeightFbxConvertable.h"
 #include "EmptyCounterWeight.h"
 

@@ -5,7 +5,7 @@
 #ifndef ALL_FBXLIBRA_H
 #define ALL_FBXLIBRA_H
 
-#include "../data/hcw_generated.h"
+#include "../../examples/data/hcw_generated.h"
 #include "CounterWeight/ICounterWeightFbxConvertable.h"
 #include "Status.h"
 #include "CounterWeight/HierarchyCounterWeight.h"
