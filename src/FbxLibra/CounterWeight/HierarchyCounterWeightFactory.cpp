@@ -21,7 +21,6 @@ CounterWeight *HierarchyCounterWeightFactory::CreateCounterWeight(const std::str
 
     FbxScene* scene = FbxScene::Create(manager, "Scene");
     importer->Import(scene);
-    importer->Destroy();
 
     FbxNode* rootNode = scene->GetRootNode();
 
@@ -31,13 +30,18 @@ CounterWeight *HierarchyCounterWeightFactory::CreateCounterWeight(const std::str
             IncludeNode(nodes, rootNode->GetChild(i));
         }
     }
-    manager->Destroy();
 
     auto f_nodes = builder->CreateVector(nodes);
     auto hierarchy_offset = FbxLibra::CounterWeight::CreateHierarchy(*this->builder, f_nodes);
     FinishHierarchyBuffer(*builder, hierarchy_offset);
 
     auto new_hierarchy = FbxLibra::CounterWeight::GetHierarchy(builder->GetBufferPointer());
+
+    importer->Destroy();
+    scene->Destroy();
+    ios->Destroy();
+    manager->Destroy();
+
     return new HierarchyCounterWeight(new_hierarchy);
 }
 
