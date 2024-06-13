@@ -4,6 +4,7 @@
 #include "FlatBufferLoader.h"
 #include "FBXLibra.h"
 #include "CounterWeight/HierarchyCounterWeight.h"
+#include "CounterWeight/HierarchyCounterWeightFactory.h"
 #include <magic_enum/magic_enum.hpp>
 
 using namespace Args;
@@ -40,31 +41,31 @@ int main(int argc, char ** argv) {
                 }
                 std::string ext = value.substr(ext_pos,value.size()-ext_pos);
                 // TODO: ここはファクトリークラスにする必要がある
-                EmptyCounterWeight* weight;
-                EmptyCounterWeight* fbx_weight;
-                flatbuffers::FlatBufferBuilder builder(1024);
 
+                CounterWeight* weight;
+                CounterWeight* fbx_weight;
+
+                CounterWeightFactory* factory;
                 if (ext == ".hcw"){
-                    weight = new HierarchyCounterWeight(value.c_str());
-                    fbx_weight = new HierarchyCounterWeight();
-                    fbx_weight->Convert(builder, cmd.value("-f"));
+                    factory = new HierarchyCounterWeightFactory();
+                    weight = factory->Load(value);
+                    fbx_weight = factory->Create(cmd.value("-f"));
                 }else{
                     throw BaseException("Invalid file extension.");
                 }
 
                 std::cout << "weight: " << value << std::endl;
                 std::cout << "fbx path: " << cmd.value("-f") << std::endl;
-                Status result = libraClient.Weigh<EmptyCounterWeight, HierarchyCounterWeight>(weight, fbx_weight);
+                Status result = FBXLibraClient::Weigh(weight, fbx_weight);
                 if (result == Status::SUCCESS){
                     std::cout << "\033[32m";
                 } else{
                     std::cout << "\033[31m";
                 }
                 std::cout << "Hierarchy: " << magic_enum::enum_name(result) << std::endl;
-
+                delete factory;
                 delete weight;
                 delete fbx_weight;
-                builder.Clear();
             }
         } else if (cmd.isDefined("create")){
             for (const auto & value : cmd.values("create")){

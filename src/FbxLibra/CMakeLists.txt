@@ -17,11 +17,14 @@ set(SOURCE_FILES
         FBXLibra.h
         FBXLibra.cpp
         ../../examples/data/hcw_generated.h
-        CounterWeight/ICounterWeightFbxConvertable.h
         CounterWeight/HierarchyCounterWeight.h
         CounterWeight/HierarchyCounterWeight.cpp
-        CounterWeight/EmptyCounterWeight.h
-        CounterWeight/EmptyCounterWeight.cpp
+        CounterWeight/CounterWeight.h
+        CounterWeight/CounterWeightFactory.h
+        CounterWeight/HierarchyCounterWeightFactory.h
+        CounterWeight/HierarchyCounterWeightFactory.cpp
+        CounterWeight/CounterWeightFactory.cpp
+        CounterWeight/CounterWeight.cpp
 )
 
 # 実行ファイルを生成

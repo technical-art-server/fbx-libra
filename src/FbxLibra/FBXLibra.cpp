@@ -4,4 +4,13 @@
 
 #include "FBXLibra.h"
 
-//template<> Status FBXLibraClient::Weigh<HierarchyCounterWeight>(HierarchyCounterWeight& weight, HierarchyCounterWeight& fbx_weight);
+Status FBXLibraClient::Weigh(CounterWeight* weight, CounterWeight* fbx_weight) {
+    Status result;
+    if (weight->Equal(*fbx_weight)){
+        result = Status::SUCCESS;
+    } else{
+        result = Status::FAILURE;
+    }
+
+    return result;
+}
