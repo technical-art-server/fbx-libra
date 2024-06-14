@@ -7,23 +7,16 @@
 
 #include <fbxsdk.h>
 #include "../../../examples/data/hcw_generated.h"
-#include "ICounterWeightFbxConvertable.h"
-#include "EmptyCounterWeight.h"
+#include "CounterWeight.h"
 
-class HierarchyCounterWeight: public EmptyCounterWeight{
+class HierarchyCounterWeight: public CounterWeight {
 
 public:
-    HierarchyCounterWeight() = default;
-    explicit HierarchyCounterWeight(const char *file_path);
-
-    bool operator==(const HierarchyCounterWeight&) const;
-
-    void Convert(flatbuffers::FlatBufferBuilder& builder, const std::string& fbx_path) override;
+    explicit HierarchyCounterWeight(const FbxLibra::CounterWeight::Hierarchy* hierarchy);
+    [[nodiscard]] bool EqualCounterWeight(const CounterWeight& other) const override;
 
 private:
-    static flatbuffers::Offset<FbxLibra::CounterWeight::Node> CreateNode(flatbuffers::FlatBufferBuilder& builder, FbxNode* pNode);
-    void IncludeNode(flatbuffers::FlatBufferBuilder& builder, std::vector<flatbuffers::Offset<FbxLibra::CounterWeight::Node>>& nodes, FbxNode* pNode, int depth = 0);
-    const FbxLibra::CounterWeight::Hierarchy* hierarchy{};
+    const FbxLibra::CounterWeight::Hierarchy* hierarchy;
 };
 
 #endif //ALL_HIERARCHYCOUNTERWEIGHT_H
