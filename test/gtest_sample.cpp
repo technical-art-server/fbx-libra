@@ -3,6 +3,7 @@
 #include "CounterWeight/HierarchyCounterWeight.h"
 #include "CounterWeight/HierarchyCounterWeightFactory.h"
 #include <filesystem>
+#include "config.h"
 
 using namespace std;
 
@@ -20,18 +21,18 @@ TEST(HierarchyCounterWeight, Check_Hierarchy) {
 	CounterWeight* fbx_weight;
 	factory = new HierarchyCounterWeightFactory();
 
-	// パスを実行ファイルからの相対パスに変更
-	filesystem::path relativePath("dragon.fbx");
-	// これだとAll.slnからの相対パスになる。
-	// テスト用に環境変数を外部から渡す必要がある。
-	filesystem::path testDataPath = filesystem::current_path().parent_path().parent_path() / "test\\data";
-	cout << "Current path: " << testDataPath << endl;
+	
+	// テスト用にCmakeからプロジェクトのパスを取得
+	cout << "Project path: " << PROJECT_PATH << endl;
 
-	filesystem::path fbxPath = testDataPath / "fbx\\dragon.fbx";
-	filesystem::path cwPath = testDataPath / "cw\\dragon.hcw";
+	auto fbxPath = string(PROJECT_PATH) + "/test/data/" + "fbx/dragon.fbx";
+	auto weightPath = string(PROJECT_PATH) + "/test/data/" + "cw/dragon.hcw";
 
-	weight = factory->Load(cwPath.string());
-	fbx_weight = factory->Create(fbxPath.string());
+	cout << "FBX Path: " << fbxPath << endl;
+	cout << "Weight Path: " << weightPath << endl;
+
+	weight = factory->Load( weightPath );
+	fbx_weight = factory->Create(fbxPath);
 	Status result = FBXLibraClient::Weigh(weight, fbx_weight);
 	EXPECT_EQ(result, Status::SUCCESS);
 

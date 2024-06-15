@@ -10,10 +10,15 @@ find_package(magic_enum)
 
 enable_testing()
 
-# add_executable(
-#     ${PROJECT_NAME}
-#     gtest_sample.cpp
-# )
+# プロジェクトのパスを取得
+set(PROJECT_PATH ${CMAKE_SOURCE_DIR})
+
+# 環境変数をC++コードに渡すためのヘッダーファイルを作成
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
+    ${CMAKE_CURRENT_BINARY_DIR}/config.h
+    @ONLY
+)
 
 # 再帰的にテストファイルを取得
 set(SOURCE_FILES
@@ -53,6 +58,7 @@ target_link_libraries(${PROJECT_NAME} libfbxsdk-md.lib libxml2-md.lib zlib-md.li
 #FbxLibraのインクルードディレクトリを追加
 target_include_directories(${PROJECT_NAME}
     PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
     ../src/FbxLibra
 )
 
