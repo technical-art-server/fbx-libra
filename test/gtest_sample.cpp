@@ -2,6 +2,9 @@
 #include <FbxLibra.h>
 #include "CounterWeight/HierarchyCounterWeight.h"
 #include "CounterWeight/HierarchyCounterWeightFactory.h"
+#include <filesystem>
+
+using namespace std;
 
 // Demonstrate some basic assertions.
 TEST(HelloTest, BasicAssertions) {
@@ -16,8 +19,19 @@ TEST(HierarchyCounterWeight, Check_Hierarchy) {
 	CounterWeight* weight;
 	CounterWeight* fbx_weight;
 	factory = new HierarchyCounterWeightFactory();
-	weight = factory->Load("dragon.hcw");
-	fbx_weight = factory->Create("dragon.fbx");
+
+	// パスを実行ファイルからの相対パスに変更
+	filesystem::path relativePath("dragon.fbx");
+	// これだとAll.slnからの相対パスになる。
+	// テスト用に環境変数を外部から渡す必要がある。
+	filesystem::path testDataPath = filesystem::current_path().parent_path().parent_path() / "test\\data";
+	cout << "Current path: " << testDataPath << endl;
+
+	filesystem::path fbxPath = testDataPath / "fbx\\dragon.fbx";
+	filesystem::path cwPath = testDataPath / "cw\\dragon.hcw";
+
+	weight = factory->Load(cwPath.string());
+	fbx_weight = factory->Create(fbxPath.string());
 	Status result = FBXLibraClient::Weigh(weight, fbx_weight);
 	EXPECT_EQ(result, Status::SUCCESS);
 
