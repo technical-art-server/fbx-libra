@@ -1,0 +1,7 @@
+// このファイルはCMakeによって生成されます。
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define PROJECT_PATH "@PROJECT_PATH@"
+
+#endif // CONFIG_H

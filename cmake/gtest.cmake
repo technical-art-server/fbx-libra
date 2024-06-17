@@ -1,0 +1,5 @@
+include(GoogleTest)
+find_package(GTest REQUIRED)
+add_library(gtest STATIC IMPORTED)
+add_library(gtest_main STATIC IMPORTED)
+link_libraries(GTest::gtest_main gtest::gtest)
