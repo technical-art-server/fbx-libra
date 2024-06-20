@@ -7,6 +7,9 @@ find_package(magic_enum)
 # ...
 
 
+# Flatcで生成されたファイルへの参照
+include_directories(${GENERATED_DIR})
+
 # プロジェクトのパスを取得
 set(PROJECT_PATH ${CMAKE_SOURCE_DIR})
 
@@ -22,7 +25,6 @@ add_executable(${PROJECT_NAME}
     ../src/FbxLibra/FlatBufferLoader.h
     ../src/FbxLibra/FBXLibra.h
     ../src/FbxLibra/FBXLibra.cpp
-    ../src/FbxLibra/../../examples/data/hcw_generated.h
     ../src/FbxLibra/CounterWeight/HierarchyCounterWeight.h
     ../src/FbxLibra/CounterWeight/HierarchyCounterWeight.cpp
     ../src/FbxLibra/CounterWeight/CounterWeight.h

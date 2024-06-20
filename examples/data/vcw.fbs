@@ -1,0 +1,44 @@
+namespace FbxLibra.VertexWeight;
+
+struct Vector2 {
+    x:double;
+    y:double;
+}
+
+struct Vector3 {
+    x:double;
+    y:double;
+    z:double;
+}
+
+struct Vector4 {
+    x:double;
+    y:double;
+    z:double;
+    a:double;
+}
+
+struct Vertex {
+    position: Vector3;
+    uv: Vector2;
+    indices: int;
+    normal: Vector3;
+    color: Vector3;
+}
+
+table Transform {
+    position: Vector3;
+    rotation: Vector3;
+    scale: Vector3;
+}
+
+table Node {
+    name: string;
+    transform: Transform;
+}
+
+table Hierarchy {
+    nodes: [Node];
+}
+
+root_type Hierarchy;
