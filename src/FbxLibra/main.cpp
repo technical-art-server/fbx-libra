@@ -23,8 +23,6 @@ int main(int argc, char ** argv) {
 
         Command create(SL("create"), ValueOptions::ManyValues, false);
         create.addArg(&fbx);
-//        Arg output('o', SL("output"), true, true);
-//        create.addArg(&output);
 
         Help help;
         help.setAppDescription(SL("help"));
