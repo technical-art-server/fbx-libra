@@ -6,7 +6,7 @@
 #define ALL_HIERARCHYCOUNTERWEIGHT_H
 
 #include <fbxsdk.h>
-#include "../../../examples/data/hcw_generated.h"
+#include "hcw_generated.h"
 #include "CounterWeight.h"
 
 class HierarchyCounterWeight: public CounterWeight {

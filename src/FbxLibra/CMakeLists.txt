@@ -8,6 +8,8 @@ find_package(magic_enum)
 
 # FBX SDKのインクルードディレクトリを指定
 include_directories($ENV{FBX_SDK_PATH}/include)
+# Flatcで生成されたファイルのディレクトリを指定
+include_directories(${GENERATED_DIR})
 
 # ソースファイルの設定
 set(SOURCE_FILES
@@ -16,7 +18,6 @@ set(SOURCE_FILES
         FlatBufferLoader.h
         FBXLibra.h
         FBXLibra.cpp
-        ../../examples/data/hcw_generated.h
         CounterWeight/HierarchyCounterWeight.h
         CounterWeight/HierarchyCounterWeight.cpp
         CounterWeight/CounterWeight.h
