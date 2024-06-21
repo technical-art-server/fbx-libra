@@ -7,6 +7,8 @@
 
 
 #include <flatbuffers/flatbuffer_builder.h>
+#include "../Status.h"
+#include <filesystem>
 
 class CounterWeight {
 public:
@@ -18,6 +20,7 @@ public:
     [[nodiscard]]
     bool Equal(const CounterWeight& other);
 
+    static Status Save(flatbuffers::FlatBufferBuilder& builder, const std::filesystem::path& path);
 private:
     /* @fn
      * @brief この関数をオーバーライドし、CounterWeight同士を比較する関数を作成する

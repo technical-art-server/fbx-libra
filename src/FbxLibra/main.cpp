@@ -1,13 +1,16 @@
 ﻿#include <args-parser/all.hpp>
 #include <memory>
+#include <filesystem>
+
+#include <magic_enum/magic_enum.hpp>
 
 #include "FlatBufferLoader.h"
 #include "FBXLibra.h"
 #include "CounterWeight/HierarchyCounterWeight.h"
 #include "CounterWeight/HierarchyCounterWeightFactory.h"
-#include <magic_enum/magic_enum.hpp>
 
 using namespace Args;
+namespace fs = std::filesystem;
 
 int main(int argc, char ** argv) {
     try {
@@ -20,6 +23,8 @@ int main(int argc, char ** argv) {
 
         Command create(SL("create"), ValueOptions::ManyValues, false);
         create.addArg(&fbx);
+//        Arg output('o', SL("output"), true, true);
+//        create.addArg(&output);
 
         Help help;
         help.setAppDescription(SL("help"));
@@ -69,6 +74,17 @@ int main(int argc, char ** argv) {
             }
         } else if (cmd.isDefined("create")){
             for (const auto & value : cmd.values("create")){
+                fs::path output_file_path = fs::path(value);
+                std::cout << output_file_path.extension() << std::endl;
+                if (output_file_path.extension() == ".hcw"){
+                    HierarchyCounterWeightFactory factory;
+                    factory.Create(cmd.value("-f"));
+                    HierarchyCounterWeight::Save(*factory.GetBuilder(), output_file_path);
+                }else if (value == "vcw"){
+
+                }else{
+                    throw BaseException("Invalid file extension.");
+                }
                 std::cout << value << std::endl;
             }
             std::cout << cmd.value("-f") << std::endl;
