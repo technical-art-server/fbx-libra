@@ -13,8 +13,9 @@ public:
 
     CounterWeightFactory();
     virtual ~CounterWeightFactory();
-    CounterWeight* Create(const std::string& fbx_path);
-    CounterWeight* Load(const std::string& weight_path);
+    CounterWeight* Create(const std::filesystem::path& fbx_path);
+    CounterWeight* Load(const std::filesystem::path& weight_path);
+    flatbuffers::FlatBufferBuilder* GetBuilder() { return builder; }
 
 private:
     /* @fn
@@ -22,12 +23,12 @@ private:
      * @param fbx_path FBXファイルのパス
      * @return 任意の生成されたCounterWeight
      */
-    virtual CounterWeight* CreateCounterWeight(const std::string& fbx_path) = 0;
+    virtual CounterWeight* CreateCounterWeight(const std::filesystem::path& fbx_path) = 0;
     /*
      * @fn
      * @brief この関数をオーバーライドし、CounterWeightFileを読み込みCounterWeightを生成する
      */
-    virtual CounterWeight* LoadCounterWeight(const std::string& weight_path) = 0;
+    virtual CounterWeight* LoadCounterWeight(const std::filesystem::path& weight_path) = 0;
 
 protected:
     /*

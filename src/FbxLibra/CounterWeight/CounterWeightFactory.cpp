@@ -4,11 +4,11 @@
 
 #include "CounterWeightFactory.h"
 
-CounterWeight *CounterWeightFactory::Create(const std::string &fbx_path) {
+CounterWeight *CounterWeightFactory::Create(const std::filesystem::path &fbx_path) {
     return CreateCounterWeight(fbx_path);
 }
 
-CounterWeight *CounterWeightFactory::Load(const std::string &weight_path) {
+CounterWeight *CounterWeightFactory::Load(const std::filesystem::path &weight_path) {
     return LoadCounterWeight(weight_path);
 }
 

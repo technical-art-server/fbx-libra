@@ -7,14 +7,14 @@
 #include "HierarchyCounterWeight.h"
 #include "../FlatBufferLoader.h"
 
-CounterWeight *HierarchyCounterWeightFactory::CreateCounterWeight(const std::string &fbx_path) {
+CounterWeight *HierarchyCounterWeightFactory::CreateCounterWeight(const std::filesystem::path &fbx_path) {
     FbxManager* manager = FbxManager::Create();
     FbxIOSettings* ios = FbxIOSettings::Create(manager, IOSROOT);
     manager->SetIOSettings(ios);
 
     FbxImporter* importer = FbxImporter::Create(manager, "");
 
-    if (!importer->Initialize(fbx_path.c_str(), -1, manager->GetIOSettings())){
+    if (!importer->Initialize(fbx_path.string().c_str(), -1, manager->GetIOSettings())){
         std::cerr << "Failed to initialize FBX importer: " << importer->GetStatus().GetErrorString() << std::endl;
         return nullptr;
     }
@@ -76,7 +76,7 @@ HierarchyCounterWeightFactory::CreateNode(FbxNode *pNode) {
     return node;
 }
 
-CounterWeight *HierarchyCounterWeightFactory::LoadCounterWeight(const std::string &weight_path) {
-    auto weight = FlatBufferLoader::Load(weight_path.c_str(), FbxLibra::CounterWeight::GetHierarchy);
+CounterWeight *HierarchyCounterWeightFactory::LoadCounterWeight(const std::filesystem::path &weight_path) {
+    auto weight = FlatBufferLoader::Load(weight_path.string().c_str(), FbxLibra::CounterWeight::GetHierarchy);
     return new HierarchyCounterWeight(weight);
 }

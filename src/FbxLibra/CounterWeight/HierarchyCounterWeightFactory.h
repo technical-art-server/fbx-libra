@@ -12,8 +12,8 @@
 
 class HierarchyCounterWeightFactory: public CounterWeightFactory{
 private:
-    CounterWeight* CreateCounterWeight(const std::string& fbx_path) override;
-    CounterWeight* LoadCounterWeight(const std::string& weight_path) override;
+    CounterWeight* CreateCounterWeight(const std::filesystem::path& fbx_path) override;
+    CounterWeight* LoadCounterWeight(const std::filesystem::path& weight_path) override;
     flatbuffers::Offset<FbxLibra::CounterWeight::Node> CreateNode(FbxNode* pNode);
     void IncludeNode(std::vector<flatbuffers::Offset<FbxLibra::CounterWeight::Node>>& nodes, FbxNode* pNode, int depth = 0);
 };
