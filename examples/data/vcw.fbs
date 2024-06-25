@@ -1,4 +1,4 @@
-namespace FbxLibra.VertexWeight;
+namespace FbxLibra.VertexCounterWeight;
 
 struct Vector2 {
     x:double;
@@ -18,12 +18,11 @@ struct Vector4 {
     a:double;
 }
 
-struct Vertex {
-    position: Vector3;
-    uv: Vector2;
-    indices: int;
-    normal: Vector3;
-    color: Vector3;
+table Mesh {
+    positions: [Vector3];
+    uvs: [Vector2];
+    indices: [int];
+    normals: [Vector3];
 }
 
 table Transform {
@@ -32,13 +31,14 @@ table Transform {
     scale: Vector3;
 }
 
-table Node {
+table MeshNode {
     name: string;
     transform: Transform;
+    mesh: Mesh;
 }
 
-table Hierarchy {
-    nodes: [Node];
+table Meshes {
+    nodes: [MeshNode];
 }
 
-root_type Hierarchy;
+root_type Meshes;

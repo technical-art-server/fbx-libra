@@ -8,6 +8,8 @@
 #include "FBXLibra.h"
 #include "CounterWeight/HierarchyCounterWeight.h"
 #include "CounterWeight/HierarchyCounterWeightFactory.h"
+#include "CounterWeight/VertexCounterWeight.h"
+#include "CounterWeight/VertexCounterWeightFactory.h"
 
 using namespace Args;
 namespace fs = std::filesystem;
@@ -78,8 +80,12 @@ int main(int argc, char ** argv) {
                     HierarchyCounterWeightFactory factory;
                     factory.Create(cmd.value("-f"));
                     HierarchyCounterWeight::Save(*factory.GetBuilder(), output_file_path);
-                }else if (value == "vcw"){
-
+                }else if (output_file_path.extension() == ".vcw"){
+					std::cout << output_file_path << std::endl;
+					std::cout << cmd.value("-f") << std::endl;
+					VertexCounterWeightFactory factory;
+					factory.Create(cmd.value("-f"));
+					VertexCounterWeight::Save(*factory.GetBuilder(), output_file_path);
                 }else{
                     throw BaseException("Invalid file extension.");
                 }
