@@ -1,21 +1,17 @@
-namespace FbxLibra.VertexCounterWeight;
+include "hcw.fbs";
 
-struct Vector2 {
-    x:double;
-    y:double;
+namespace FbxLibra.CounterWeight;
+
+table UV {
+    uv: [Vector2];
+    //index: int;
 }
 
-struct Vector3 {
-    x:double;
-    y:double;
-    z:double;
-}
-
-struct Vector4 {
-    x:double;
-    y:double;
-    z:double;
-    a:double;
+table Color {
+    r: float;
+    g: float;
+    b: float;
+    a: float;
 }
 
 table Mesh {
@@ -23,12 +19,9 @@ table Mesh {
     uvs: [Vector2];
     indices: [int];
     normals: [Vector3];
-}
-
-table Transform {
-    position: Vector3;
-    rotation: Vector3;
-    scale: Vector3;
+    //colors: [Color];
+    //uvs: [UV];
+    //weights: [SkinWeight];
 }
 
 table MeshNode {
@@ -42,3 +35,7 @@ table Meshes {
 }
 
 root_type Meshes;
+
+// 出力後のバイナリに関する記述
+file_identifier "VTCW";
+file_extension "vcw";

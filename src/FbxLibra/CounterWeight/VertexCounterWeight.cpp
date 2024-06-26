@@ -5,7 +5,7 @@
 #include <filesystem>
 #include "../FlatBufferLoader.h"
 
-VertexCounterWeight::VertexCounterWeight(const FbxLibra::VertexCounterWeight::Meshes * meshes) {
+VertexCounterWeight::VertexCounterWeight(const FbxLibra::CounterWeight::Meshes * meshes) {
     this->meshes = meshes;
 }
 

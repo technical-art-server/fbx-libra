@@ -4,6 +4,7 @@
 #include "../FlatBufferLoader.h"
 
 using namespace std;
+using namespace FbxLibra::CounterWeight;
 
 CounterWeight* VertexCounterWeightFactory::CreateCounterWeight(const std::filesystem::path& fbx_path) {
 	FbxManager* manager = FbxManager::Create();
@@ -30,25 +31,30 @@ CounterWeight* VertexCounterWeightFactory::CreateCounterWeight(const std::filesy
 		}
 	}
 
-	std::vector<flatbuffers::Offset<FbxLibra::VertexCounterWeight::MeshNode>> mesh_node_vector;
+	if (mesh_nodes.empty()) {
+		std::cerr << "No mesh nodes found in the scene." << std::endl;
+		return nullptr;
+	}
+
+	std::vector<flatbuffers::Offset<MeshNode>> mesh_node_vector;
 
 	// Loop of mesh nodes
 	for (auto node : mesh_nodes) {
 		auto mesh = node->GetMesh();
 		if (!mesh) {
+			std::cerr << "Failed to get mesh from node: " << node->GetName() << std::endl;
 			continue;
 		}
 
-		//メッシュの頂点を取得
+		//頂点の座標を取得
 		int vertex_count = mesh->GetControlPointsCount();
-		// なぜVector4なのか？
 		FbxVector4* vertices = mesh->GetControlPoints();
-		
-		std::vector<FbxLibra::VertexCounterWeight::Vector3> vertices_vector;
-		
+
+		std::vector<Vector3> vertices_vector;
+
 		for (int i = 0; i < vertex_count; ++i) {
 			auto vertex = vertices[i];
-			auto v_pos = FbxLibra::VertexCounterWeight::Vector3(vertex[0], vertex[1], vertex[2]);
+			auto v_pos = Vector3(vertex[0], vertex[1], vertex[2]);
 			vertices_vector.push_back(v_pos);
 		}
 
@@ -72,80 +78,69 @@ CounterWeight* VertexCounterWeightFactory::CreateCounterWeight(const std::filesy
 		int uv_count = mesh->GetElementUVCount();
 		FbxGeometryElementUV* uv = mesh->GetElementUV(0);
 
-		std::vector<FbxLibra::VertexCounterWeight::Vector2> uv_vector;
+		std::vector<Vector2> uv_vector;
 
 		// UVがない場合はnullチェックではじく
 		if (uv) {
 			for (int i = 0; i < uv_count; ++i) {
 				auto uv_value = uv->GetDirectArray().GetAt(i);
-				auto uv_pos = FbxLibra::VertexCounterWeight::Vector2(uv_value[0], uv_value[1]);
+				auto uv_pos = Vector2(uv_value[0], uv_value[1]);
 				uv_vector.push_back(uv_pos);
 			}
 		}
 
 		auto uv_offsets = builder->CreateVectorOfStructs(uv_vector);
-		
+
 
 		//メッシュの法線を取得
-
 		int normal_count = mesh->GetElementNormalCount();
 		FbxGeometryElementNormal* normal_element = mesh->GetElementNormal(0);
 
-		std::vector<FbxLibra::VertexCounterWeight::Vector3> normal_vector;
+		std::vector<Vector3> normal_vector;
 
 		// 法線がない場合はnullチェックではじく
 		if (normal_element) {
 			for (int i = 0; i < normal_count; ++i) {
 				auto normal_value = normal_element->GetDirectArray().GetAt(i);
-				auto normal = FbxLibra::VertexCounterWeight::Vector3(normal_value[0], normal_value[1], normal_value[2]);
+				auto normal = Vector3(normal_value[0], normal_value[1], normal_value[2]);
 				normal_vector.push_back(normal);
 			}
 		}
 
 		auto normal_offsets = builder->CreateVectorOfStructs(normal_vector);
-	
-		//auto skin_count = mesh->GetDeformerCount(FbxDeformer::eSkin);
-		//auto cluster_count = 0;
-		//for (int i = 0; i < skin_count; ++i) {
-		//	auto skin = static_cast<FbxSkin*>(mesh->GetDeformer(i, FbxDeformer::eSkin));
-		//	cluster_count += skin->GetClusterCount();
-		//}
 
+		cout << "Mesh Name: " << node->GetName() << endl;
 		cout << "Vertex Count: " << vertex_count << endl;
 		cout << "Polygon Count: " << polygon_count << endl;
 		cout << "UV Count: " << uv_count << endl;
 		cout << "Normal Count: " << normal_count << endl;
-		//cout << "Skin Count: " << skin_count << endl;
 
-		//auto mesh_builder = new FbxLibra::VertexCounterWeight::MeshBuilder(*this->builder);
-
-		auto mesh_offset = FbxLibra::VertexCounterWeight::CreateMesh(
-			*this->builder, vertices_offsets, uv_offsets, indices_offsets,  normal_offsets);
+		auto mesh_offset = CreateMesh(
+			*this->builder, vertices_offsets, uv_offsets, indices_offsets, normal_offsets);
 
 		auto mesh_name = this->builder->CreateString(node->GetName());
 		auto fbx_pos = node->LclTranslation.Get();
 		auto fbx_rot = node->LclRotation.Get();
 		auto fbx_scl = node->LclScaling.Get();
 
-		auto position = FbxLibra::VertexCounterWeight::Vector3(fbx_pos[0], fbx_pos[1], fbx_pos[2]);
-		auto rotation = FbxLibra::VertexCounterWeight::Vector3(fbx_rot[0], fbx_rot[1], fbx_rot[2]);
-		auto scale = FbxLibra::VertexCounterWeight::Vector3(fbx_scl[0], fbx_scl[1], fbx_scl[2]);
+		auto position = Vector3(fbx_pos[0], fbx_pos[1], fbx_pos[2]);
+		auto rotation = Vector3(fbx_rot[0], fbx_rot[1], fbx_rot[2]);
+		auto scale = Vector3(fbx_scl[0], fbx_scl[1], fbx_scl[2]);
 
-		
-		auto transform = FbxLibra::VertexCounterWeight::CreateTransform(*this->builder, &position, &rotation, &scale);
-		auto mesh_node = FbxLibra::VertexCounterWeight::CreateMeshNode(*this->builder, mesh_name, transform, mesh_offset);
-		
 
+		auto transform = CreateTransform(*this->builder, &position, &rotation, &scale);
+		auto mesh_node = CreateMeshNode(*this->builder, mesh_name, transform, mesh_offset);
 
 		mesh_node_vector.push_back(mesh_node);
-	}// ends of Loop of mesh nodes
+	} // ends of Loop of mesh nodes
 
-	
+
 	auto mesh_nodes_offsets = builder->CreateVector(mesh_node_vector);
-	auto meshes_offsets = FbxLibra::VertexCounterWeight::CreateMeshes(*this->builder, mesh_nodes_offsets);
+	auto meshes_offsets = CreateMeshes(*this->builder, mesh_nodes_offsets);
+	//Finish serializing a buffer by writing the root offset.
 	FinishMeshesBuffer(*builder, meshes_offsets);
 
-	auto ne = FbxLibra::VertexCounterWeight::GetMeshes(builder->GetBufferPointer());
+	auto ne = GetMeshes(builder->GetBufferPointer());
 
 	importer->Destroy();
 	scene->Destroy();
@@ -157,8 +152,7 @@ CounterWeight* VertexCounterWeightFactory::CreateCounterWeight(const std::filesy
 
 // シーン内のMeshノードを再帰的に探索する関数
 void VertexCounterWeightFactory::IncludeMeshNodes(FbxNode* node, std::vector<FbxNode*>& parentNodes) {
-	
-	
+
 	if (node->GetNodeAttribute()) {
 		auto attr = node->GetNodeAttribute()->GetAttributeType();
 		if (attr == FbxNodeAttribute::eMesh) {
@@ -173,6 +167,6 @@ void VertexCounterWeightFactory::IncludeMeshNodes(FbxNode* node, std::vector<Fbx
 
 
 CounterWeight* VertexCounterWeightFactory::LoadCounterWeight(const std::filesystem::path& weight_path) {
-	auto weight = FlatBufferLoader::Load(weight_path.string().c_str(), FbxLibra::VertexCounterWeight::GetMeshes);
+	auto weight = FlatBufferLoader::Load(weight_path.string().c_str(), GetMeshes);
 	return new VertexCounterWeight(weight);
 }

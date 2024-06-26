@@ -8,14 +8,14 @@
 class VertexCounterWeight: public CounterWeight {
 
 public:
-    explicit VertexCounterWeight(const FbxLibra::VertexCounterWeight::Meshes* meshes);
+    explicit VertexCounterWeight(const FbxLibra::CounterWeight::Meshes* meshes);
     // C2512エラーで入れたデフォルトコンストラクタ。
     // 引数を指定しない場合のコンストラクタが必要らしい。
 	VertexCounterWeight() = default;
     [[nodiscard]] bool EqualCounterWeight(const CounterWeight& other) const override;
 	
 private:
-    const FbxLibra::VertexCounterWeight::Meshes* meshes;
+    const FbxLibra::CounterWeight::Meshes* meshes;
 };
 
 #endif //ALL_VERTEXCOUNTERWEIGHT_H
