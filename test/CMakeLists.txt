@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+﻿cmake_minimum_required(VERSION 3.14)
 project(TEST)
 
 # ...
@@ -34,6 +34,7 @@ add_executable(${PROJECT_NAME}
     ../src/FbxLibra/CounterWeight/CounterWeightFactory.cpp
     ../src/FbxLibra/CounterWeight/CounterWeight.cpp
     gtest_sample.cpp
+    gtest_create_hierarchy.cpp
 )
 
 target_link_libraries(
