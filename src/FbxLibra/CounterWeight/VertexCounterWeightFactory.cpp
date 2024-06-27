@@ -111,9 +111,6 @@ CounterWeight* VertexCounterWeightFactory::CreateCounterWeight(const std::filesy
 
 		cout << "Mesh Name: " << node->GetName() << endl;
 		cout << "Vertex Count: " << vertex_count << endl;
-		cout << "Polygon Count: " << polygon_count << endl;
-		cout << "UV Count: " << uv_count << endl;
-		cout << "Normal Count: " << normal_count << endl;
 
 		auto mesh_offset = CreateMesh(
 			*this->builder, vertices_offsets, uv_offsets, indices_offsets, normal_offsets);
