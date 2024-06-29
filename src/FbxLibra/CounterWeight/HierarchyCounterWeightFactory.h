@@ -8,7 +8,7 @@
 
 #include <fbxsdk.h>
 #include "CounterWeightFactory.h"
-#include "../../../examples/data/hcw_generated.h"
+#include "hcw_generated.h"
 
 class HierarchyCounterWeightFactory: public CounterWeightFactory{
 private:
