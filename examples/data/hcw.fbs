@@ -1,10 +1,21 @@
-
 namespace FbxLibra.CounterWeight;
+
+struct Vector2 {
+    x:double;
+    y:double;
+}
 
 struct Vector3 {
     x:double;
     y:double;
     z:double;
+}
+
+struct Vector4 {
+    x:double;
+    y:double;
+    z:double;
+    w:double;
 }
 
 table Transform {
@@ -17,7 +28,6 @@ table Node {
     name: string;
     transform: Transform;
 }
-
 
 table Hierarchy {
     nodes: [Node];

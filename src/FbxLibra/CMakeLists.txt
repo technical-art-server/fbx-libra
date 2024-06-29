@@ -28,6 +28,10 @@ set(SOURCE_FILES
         CounterWeight/HierarchyCounterWeightFactory.cpp
         CounterWeight/CounterWeightFactory.cpp
         CounterWeight/CounterWeight.cpp
+        CounterWeight/VertexCounterWeight.h
+        CounterWeight/VertexCounterWeight.cpp
+        CounterWeight/VertexCounterWeightFactory.h
+        CounterWeight/VertexCounterWeightFactory.cpp
 )
 
 # 実行ファイルを生成

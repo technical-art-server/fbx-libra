@@ -31,10 +31,15 @@ add_executable(${PROJECT_NAME}
     ../src/FbxLibra/CounterWeight/CounterWeightFactory.h
     ../src/FbxLibra/CounterWeight/HierarchyCounterWeightFactory.h
     ../src/FbxLibra/CounterWeight/HierarchyCounterWeightFactory.cpp
+    ../src/FbxLibra/CounterWeight/VertexCounterWeight.h
+    ../src/FbxLibra/CounterWeight/VertexCounterWeight.cpp
+    ../src/FbxLibra/CounterWeight/VertexCounterWeightFactory.h
+    ../src/FbxLibra/CounterWeight/VertexCounterWeightFactory.cpp
     ../src/FbxLibra/CounterWeight/CounterWeightFactory.cpp
     ../src/FbxLibra/CounterWeight/CounterWeight.cpp
     gtest_sample.cpp
     gtest_create_hierarchy.cpp
+    gtest_vertex.cpp
 )
 
 target_link_libraries(
