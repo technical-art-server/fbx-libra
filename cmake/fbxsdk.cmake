@@ -45,5 +45,10 @@ else()
     if (NOT EXISTS "${FBX_SDK_LIB_DIR}")
         set(FBX_SDK_LIB_DIR ${FBX_SDK_ROOT}/lib/vs2015/x64)
     endif()
+    set(FBX_SDK_LIBS
+        libfbxsdk-md.lib
+        libxml2-md.lib
+        zlib-md.lib
+    )
     set(FBX_SDK_FOUND TRUE)
 endif()

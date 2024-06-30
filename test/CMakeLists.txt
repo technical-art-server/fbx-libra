@@ -57,7 +57,7 @@ target_link_directories(${PROJECT_NAME}
         $<$<CONFIG:Debug>:${FBX_SDK_LIB_DIR}/debug>
         $<$<CONFIG:Release>:${FBX_SDK_LIB_DIR}/release>
 )
-target_link_libraries(${PROJECT_NAME} libfbxsdk-md.lib libxml2-md.lib zlib-md.lib)
+target_link_libraries(${PROJECT_NAME} ${FBX_SDK_LIBS})
 
 #FbxLibraのインクルードディレクトリを追加
 target_include_directories(${PROJECT_NAME}
