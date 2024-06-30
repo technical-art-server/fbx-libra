@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 project(DecodeSample)
 
 # FBX SDKのインクルードディレクトリ
-include_directories($ENV{FBX_SDK_PATH}/include)
+include_directories(${FBX_SDK_INCLUDE_DIR})
 
 find_package(flatbuffers)
 
@@ -22,8 +22,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 # FBX SDKライブラリのディレクトリ
 target_link_directories(${PROJECT_NAME}
         PRIVATE
-        $<$<CONFIG:Debug>:$ENV{FBX_SDK_PATH}/lib/x64/debug>
-        $<$<CONFIG:Release>:$ENV{FBX_SDK_PATH}/lib/x64/release>
+        $<$<CONFIG:Debug>:${FBX_SDK_LIB_DIR}/debug>
+        $<$<CONFIG:Release>:${FBX_SDK_LIB_DIR}/release>
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/ignore:4099")
