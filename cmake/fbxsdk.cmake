@@ -34,6 +34,7 @@ if (NOT EXISTS "${FBX_SDK_ROOT}")
     set(FBX_SDK_ROOT ${AUDODESK_INSTALL_BASE_DEFAULT}/FBX/FBX\ SDK/${FBX_SDK_VERSION})
     if (EXISTS "${FBX_SDK_ROOT}")
         message(STATUS "FBX SDK found at DEFAULT ${FBX_SDK_ROOT}")
+    endif()
 endif()
 
 # パスが存在しない場合はエラー

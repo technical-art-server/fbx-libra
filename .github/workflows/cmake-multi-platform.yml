@@ -65,7 +65,7 @@ jobs:
         7z x -o${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win fbx20190_fbxsdk_vs2015_win.exe
         set FBX_SDK_PATH=${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win
         echo %FBX_SDK_PATH%
-        echo "fbx-sdk-path=${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win"
+        echo "fbx-sdk-path=${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win" >> "$GITHUB_OUTPUT"
 
     - name: Install FBX SDK on Linux
       if: matrix.os == 'ubuntu-latest'
@@ -77,7 +77,7 @@ jobs:
         export FBX_SDK_PATH=${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux
         echo $FBX_SDK_PATH
         ls -al ${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux
-        echo "fbx-sdk-path=${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux"
+        echo "fbx-sdk-path=${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux" >> "$GITHUB_OUTPUT"
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
