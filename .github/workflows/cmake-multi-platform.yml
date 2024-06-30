@@ -45,7 +45,7 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DFBX_SDK_PATH=${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win
+        -DFBX_SDK_ROOT=${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win
         -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=${{ github.workspace }}\conan_provider.cmake
         -DCMAKE_BUILD_TYPE=Release
         -S ${{ github.workspace }}
