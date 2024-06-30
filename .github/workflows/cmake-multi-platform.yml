@@ -57,18 +57,18 @@ jobs:
 
     - name: Download FBX SDK on Windows
       if: matrix.os == 'windows-latest'
-      shell: bash
+      shell: cmd
       run: |
         choco install 7zip
-        if [ ! -d ${{ github.workspace }}\third_party ]; then mkdir -p ${{ github.workspace }}\third_party; fi
-        curl -L https://damassets.autodesk.net/content/dam/autodesk/www/files/fbx20201_fbxsdk_vs2022_win.exe -o fbx20201_fbxsdk_vs2022_win.exe
+        mkdir -p ${{ github.workspace }}\third_party
+        wget http://download.autodesk.com/us/fbx/2019/2019.0/fbx20190_fbxsdk_vs2015_win.exe
 
     - name: Install FBX SDK on Windows
       if: matrix.os == 'windows-latest'
       shell: powershell
       run: |
-        7z x -o${{ github.workspace }}\third_party\fbx20201_fbxsdk_vs2022_win fbx20201_fbxsdk_vs2022_win.exe
-        $env:FBX_SDK_PATH = ${{ github.workspace }}\third_party\fbx20201_fbxsdk_vs2022_win
+        7z x -o${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win.exe fbx20190_fbxsdk_vs2015_win.exe
+        $env:FBX_SDK_PATH = ${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win.exe
 
     - name: Install FBX SDK on Linux
       if: matrix.os == 'ubuntu-latest'
