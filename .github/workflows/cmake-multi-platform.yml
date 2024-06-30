@@ -65,7 +65,8 @@ jobs:
         7z x -o${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win fbx20190_fbxsdk_vs2015_win.exe
         set FBX_SDK_PATH=${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win
         echo %FBX_SDK_PATH%
-        echo "fbx-sdk-path=${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win" >> "$GITHUB_OUTPUT"
+        dir ${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win
+        echo "fbx-sdk-path=${{ github.workspace }}\third_party/fbx20190_fbxsdk_vs2015_win" >> "$GITHUB_OUTPUT"
 
     - name: Install FBX SDK on Linux
       if: matrix.os == 'ubuntu-latest'
@@ -84,7 +85,7 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DFBX_SDK_PATH=${{ steps.strings.outputs.fbx-sdk-path }}
+        -DFBX_SDK_PATH=$FBX_SDK_PATH
         -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=${{ github.workspace }}\conan_provider.cmake
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
