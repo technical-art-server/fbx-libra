@@ -1,14 +1,13 @@
 # CMakeの引数指定でFBX SDKのパスを受け取る
 option(FBX_SDK_ROOT "Path to root of fbx-sdk" OFF)
 
-if (EXISTS "${FBX_SDK_ROOT}")
-    message(STATUS "FBX SDK found at CMake ${FBX_SDK_ROOT}")
-endif()
-
 # 環境変数に入ってるかチェック
 if (NOT EXISTS "${FBX_SDK_ROOT}")
-    message(STATUS "FBX SDK found at ENV ${FBX_SDK_ROOT}")
+    message(STATUS "FBX SDK not found at ARGS ${FBX_SDK_ROOT}")
     set(FBX_SDK_ROOT $ENV{FBX_SDK_PATH} PATH "Path to root of fbx-sdk")
+    if (EXISTS "${FBX_SDK_ROOT}")
+        message(STATUS "FBX SDK found at ENV ${FBX_SDK_ROOT}")
+    endif()
 endif()
 
 # 環境変数に入ってない場合はデフォルトのパスを設定
