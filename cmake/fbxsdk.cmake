@@ -1,7 +1,7 @@
 # CMakeの引数指定でFBX SDKのパスを受け取る
 option(FBX_SDK_ROOT "Path to root of fbx-sdk" OFF)
 
-if (FBX_SDK_ROOT)
+if (EXISTS "${FBX_SDK_ROOT}")
     message(STATUS "FBX SDK found at CMake ${FBX_SDK_ROOT}")
 endif()
 
@@ -32,7 +32,8 @@ if (NOT EXISTS "${FBX_SDK_ROOT}")
     "Root path containing your maya installations, e.g. /usr/autodesk or /Applications/Autodesk/")
 
     set(FBX_SDK_ROOT ${AUDODESK_INSTALL_BASE_DEFAULT}/FBX/FBX\ SDK/${FBX_SDK_VERSION})
-    message(STATUS "FBX SDK found at DEFAULT ${FBX_SDK_ROOT}")
+    if (EXISTS "${FBX_SDK_ROOT}")
+        message(STATUS "FBX SDK found at DEFAULT ${FBX_SDK_ROOT}")
 endif()
 
 # パスが存在しない場合はエラー

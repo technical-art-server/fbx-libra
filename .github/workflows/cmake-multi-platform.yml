@@ -63,9 +63,9 @@ jobs:
         mkdir -p ${{ github.workspace }}\third_party
         curl -L http://download.autodesk.com/us/fbx/2019/2019.0/fbx20190_fbxsdk_vs2015_win.exe -o fbx20190_fbxsdk_vs2015_win.exe
         7z x -o${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win fbx20190_fbxsdk_vs2015_win.exe
+        set FBX_SDK_PATH=${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win
         echo %FBX_SDK_PATH%
-      env:
-        FBX_SDK_PATH: ${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win
+        echo "fbx-sdk-path=${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win"
 
     - name: Install FBX SDK on Linux
       if: matrix.os == 'ubuntu-latest'
@@ -76,16 +76,15 @@ jobs:
         tar -xvf ${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux.tar.gz -C ${{ github.workspace }}/third_party
         export FBX_SDK_PATH=${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux
         echo $FBX_SDK_PATH
-        ls ${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux
-      env:
-        FBX_SDK_PATH: ${{ github.workspace }}\third_party\fbx202037_fbxsdk_linux
+        ls -al ${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux
+        echo "fbx-sdk-path=${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux"
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DFBX_SDK_PATH=${{env.FBX_SDK_PATH}}
+        -DFBX_SDK_PATH=${{ steps.strings.outputs.fbx-sdk-path }}
         -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=${{ github.workspace }}\conan_provider.cmake
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
