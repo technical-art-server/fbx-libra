@@ -9,7 +9,7 @@ find_package(magic_enum)
 
 
 # FBX SDKのインクルードディレクトリを指定
-include_directories($ENV{FBX_SDK_PATH}/include)
+include_directories(${FBX_SDK_INCLUDE_DIR})
 # Flatcで生成されたファイルのディレクトリを指定
 include_directories(${GENERATED_DIR})
 
@@ -44,8 +44,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 # FBX SDKライブラリのディレクトリ
 target_link_directories(${PROJECT_NAME}
         PRIVATE
-        $<$<CONFIG:Debug>:$ENV{FBX_SDK_PATH}/lib/x64/debug>
-        $<$<CONFIG:Release>:$ENV{FBX_SDK_PATH}/lib/x64/release>
+        $<$<CONFIG:Debug>:${FBX_SDK_LIB_DIR}/debug>
+        $<$<CONFIG:Release>:${FBX_SDK_LIB_DIR}/release>
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -58,7 +58,7 @@ target_link_libraries(${PROJECT_NAME}
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/ignore:4099")
 
 # FBX SDKライブラリとリンク
-target_link_libraries(${PROJECT_NAME} libfbxsdk-md.lib libxml2-md.lib zlib-md.lib)
+target_link_libraries(${PROJECT_NAME} libfbxsdk-md.lib)
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} //MDd" CACHE STRING "description")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD" CACHE STRING "description")
