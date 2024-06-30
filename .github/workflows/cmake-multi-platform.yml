@@ -55,20 +55,15 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}\build" >> "$GITHUB_OUTPUT"
 
-    - name: Download FBX SDK on Windows
+    - name: Install FBX SDK on Windows
       if: matrix.os == 'windows-latest'
       shell: cmd
       run: |
         choco install 7zip
         mkdir -p ${{ github.workspace }}\third_party
         curl -L http://download.autodesk.com/us/fbx/2019/2019.0/fbx20190_fbxsdk_vs2015_win.exe -o fbx20190_fbxsdk_vs2015_win.exe
-
-    - name: Install FBX SDK on Windows
-      if: matrix.os == 'windows-latest'
-      shell: powershell
-      run: |
-        7z x -o${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win.exe fbx20190_fbxsdk_vs2015_win.exe
-        $env:FBX_SDK_PATH = ${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win.exe
+        7z x -o${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win fbx20190_fbxsdk_vs2015_win.exe
+        set FBX_SDK_PATH=${{ github.workspace }}\third_party\fbx20190_fbxsdk_vs2015_win
 
     - name: Install FBX SDK on Linux
       if: matrix.os == 'ubuntu-latest'
@@ -80,7 +75,9 @@ jobs:
         export FBX_SDK_PATH=${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux
 
     - name: Echo FBX_SDK_PATH
-      run: echo $env:FBX_SDK_PATH
+      run: |
+        echo $env:FBX_SDK_PATH
+        echo $FBX_SDK_PATH
 
     # - name: Configure CMake
     #   # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
