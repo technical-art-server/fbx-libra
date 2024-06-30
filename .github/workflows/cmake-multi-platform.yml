@@ -55,12 +55,19 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}\build" >> "$GITHUB_OUTPUT"
 
-    - name: Install FBX SDK on Windows
+    - name: Download FBX SDK on Windows
       if: matrix.os == 'windows-latest'
+      shell: powershell
       run: |
         choco install 7zip
         mkdir -p ${{ github.workspace }}\third_party
         Invoke-WebRequest -Uri https://damassets.autodesk.net/content/dam/autodesk/www/files/fbx202037_fbxsdk_vs2022_win.exe -OutFile ${{ github.workspace }}\third_party\fbx20201_fbxsdk_vs2022_win.exe
+        ls ${{ github.workspace }}\third_party
+
+    - name: Install FBX SDK on Windows
+      if: matrix.os == 'windows-latest'
+      shell: powershell
+      run: |
         7z x ${{ github.workspace }}\third_party\fbx20201_fbxsdk_vs2022_win.zip -o${{ github.workspace }}\third_party\fbx20201_fbxsdk_vs2022_win
         $env:FBX_SDK_PATH = ${{ github.workspace }}\third_party\fbx20201_fbxsdk_vs2022_win
 
@@ -74,7 +81,7 @@ jobs:
         export FBX_SDK_PATH=${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux
 
     - name: Echo FBX_SDK_PATH
-      run: echo $FBX_SDK_PATH
+      run: echo $env:FBX_SDK_PATH
 
     # - name: Configure CMake
     #   # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
