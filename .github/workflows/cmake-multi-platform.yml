@@ -61,13 +61,13 @@ jobs:
       run: |
         choco install 7zip
         if [ ! -d ${{ github.workspace }}\third_party ]; then mkdir -p ${{ github.workspace }}\third_party; fi
-        curl -L https://damassets.autodesk.net/content/dam/autodesk/www/files/fbx20201_fbxsdk_vs2022_win.zip -o fbx20201_fbxsdk_vs2022_win.zip
+        curl -L https://damassets.autodesk.net/content/dam/autodesk/www/files/fbx20201_fbxsdk_vs2022_win.exe -o fbx20201_fbxsdk_vs2022_win.exe
 
     - name: Install FBX SDK on Windows
       if: matrix.os == 'windows-latest'
       shell: powershell
       run: |
-        7z x fbx20201_fbxsdk_vs2022_win.zip -o${{ github.workspace }}\third_party\fbx20201_fbxsdk_vs2022_win
+        7z x -o${{ github.workspace }}\third_party\fbx20201_fbxsdk_vs2022_win fbx20201_fbxsdk_vs2022_win.exe
         $env:FBX_SDK_PATH = ${{ github.workspace }}\third_party\fbx20201_fbxsdk_vs2022_win
 
     - name: Install FBX SDK on Linux
