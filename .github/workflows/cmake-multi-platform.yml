@@ -4,7 +4,7 @@ name: FbxLibra Build with CMake on multiple platforms
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "feature/add_ci" ]
   pull_request:
     branches: [ "main" ]
 
@@ -46,6 +46,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Install Conan
+      id: conan
+      uses: turtlebrowser/get-conan@main
+
+    - name: Conan version
+      run: echo "${{ steps.conan.outputs.version }}"
 
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
