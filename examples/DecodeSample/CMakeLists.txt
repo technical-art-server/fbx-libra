@@ -29,7 +29,7 @@ target_link_directories(${PROJECT_NAME}
 set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/ignore:4099")
 
 # FBX SDKライブラリとリンク
-target_link_libraries(${PROJECT_NAME} libfbxsdk-md.lib)
+target_link_libraries(${PROJECT_NAME} libfbxsdk-md.lib libxml2-md.lib zlib-md.lib)
 
 target_link_libraries(${PROJECT_NAME}
         flatbuffers::flatbuffers

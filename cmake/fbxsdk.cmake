@@ -13,7 +13,7 @@ endif()
 # 環境変数に入ってない場合はデフォルトのパスを設定
 if (NOT EXISTS "${FBX_SDK_ROOT}")
     if(NOT DEFINED FBX_SDK_VERSION)
-        set(FBX_SDK_VERSION 2020.3.7 STRING "fbx sdk version")
+        set(FBX_SDK_VERSION 2020.3.7)
     endif()
 
     if(WIN32)
@@ -30,7 +30,7 @@ if (NOT EXISTS "${FBX_SDK_ROOT}")
     set(AUDODESK_INSTALL_BASE_PATH ${AUDODESK_INSTALL_BASE_DEFAULT} STRING
     "Root path containing your maya installations, e.g. /usr/autodesk or /Applications/Autodesk/")
 
-    set(FBX_SDK_ROOT ${AUDODESK_INSTALL_BASE_DEFAULT}/FBX/FBX\ SDK/${FBX_SDK_VERSION})
+    set(FBX_SDK_ROOT "${AUDODESK_INSTALL_BASE_DEFAULT}/FBX/FBX SDK/${FBX_SDK_VERSION}")
     if (EXISTS "${FBX_SDK_ROOT}")
         message(STATUS "FBX SDK found at DEFAULT ${FBX_SDK_ROOT}")
     endif()
