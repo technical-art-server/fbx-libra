@@ -61,7 +61,7 @@ jobs:
       run: |
         choco install 7zip
         mkdir -p ${{ github.workspace }}\third_party
-        wget http://download.autodesk.com/us/fbx/2019/2019.0/fbx20190_fbxsdk_vs2015_win.exe
+        curl -L http://download.autodesk.com/us/fbx/2019/2019.0/fbx20190_fbxsdk_vs2015_win.exe -o fbx20190_fbxsdk_vs2015_win.exe
 
     - name: Install FBX SDK on Windows
       if: matrix.os == 'windows-latest'
