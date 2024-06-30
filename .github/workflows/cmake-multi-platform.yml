@@ -48,9 +48,6 @@ jobs:
       id: conan
       uses: turtlebrowser/get-conan@main
 
-    - name: Conan version
-      run: echo "${{ steps.conan.outputs.version }}"
-
     - name: echo current directory
       run: echo "${{ github.workspace }}"
 
@@ -62,7 +59,7 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}\build" >> "$GITHUB_OUTPUT"
 
     - name: Install FBX SDK on Windows
-      if: runner.os == 'windows-latest'
+      if: matrix.os == 'windows-latest'
       shell: bash
       run: |
         choco install 7zip
@@ -72,7 +69,7 @@ jobs:
         export FBX_SDK_PATH=${{ github.workspace }}/third_party/fbx20201_fbxsdk_vs2022_win
 
     - name: Install FBX SDK on Linux
-      if: runner.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu-latest'
       shell: bash
       run: |
         mkdir -p ${{ github.workspace }}/third_party
