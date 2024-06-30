@@ -76,6 +76,9 @@ jobs:
         tar -xvf ${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux.tar.gz -C ${{ github.workspace }}/third_party
         export FBX_SDK_PATH=${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux
         echo $FBX_SDK_PATH
+        ls ${{ github.workspace }}/third_party/fbx202037_fbxsdk_linux
+      env:
+        FBX_SDK_PATH: ${{ github.workspace }}\third_party\fbx202037_fbxsdk_linux
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
