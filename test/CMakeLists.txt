@@ -51,13 +51,13 @@ target_link_libraries(
 )
 
 # FBX SDKの設定
-target_include_directories(${PROJECT_NAME} PRIVATE $ENV{FBX_SDK_PATH}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${FBX_SDK_INCLUDE_DIR})
 target_link_directories(${PROJECT_NAME}
         PRIVATE
-        $<$<CONFIG:Debug>:$ENV{FBX_SDK_PATH}/lib/x64/debug>
-        $<$<CONFIG:Release>:$ENV{FBX_SDK_PATH}/lib/x64/release>
+        $<$<CONFIG:Debug>:${FBX_SDK_LIB_DIR}/debug>
+        $<$<CONFIG:Release>:${FBX_SDK_LIB_DIR}/release>
 )
-target_link_libraries(${PROJECT_NAME} libfbxsdk-md.lib libxml2-md.lib zlib-md.lib)
+target_link_libraries(${PROJECT_NAME} ${FBX_SDK_LIBS})
 
 #FbxLibraのインクルードディレクトリを追加
 target_include_directories(${PROJECT_NAME}
