@@ -6,7 +6,7 @@
 #include "../FlatBufferLoader.h"
 
 using namespace std;
-using namespace FbxLibra::CounterWeight;
+using namespace Weight;
 
 template<typename T>
 bool CompareFlatBuffersVector(const flatbuffers::Vector<T>* vec1, const flatbuffers::Vector<T>* vec2) {

@@ -4,7 +4,7 @@
 
 #include <fbxsdk.h>
 #include "CounterWeightFactory.h"
-#include "vcw_generated.h"
+#include "cw_generated.h"
 
 class VertexCounterWeightFactory : public CounterWeightFactory {
 private:

@@ -6,6 +6,7 @@
 #include "HierarchyCounterWeightFactory.h"
 #include "HierarchyCounterWeight.h"
 #include "../FlatBufferLoader.h"
+#include "flatbuffers/flatbuffers.h"
 
 CounterWeight *HierarchyCounterWeightFactory::CreateCounterWeight(const std::filesystem::path &fbx_path) {
     FbxManager* manager = FbxManager::Create();
@@ -24,7 +25,7 @@ CounterWeight *HierarchyCounterWeightFactory::CreateCounterWeight(const std::fil
 
     FbxNode* rootNode = scene->GetRootNode();
 
-    std::vector<flatbuffers::Offset<FbxLibra::CounterWeight::Node>> nodes;
+    std::vector<flatbuffers::Offset<Weight::Node>> nodes;
     if (rootNode){
         for (int i =0; i < rootNode->GetChildCount(); i++){
             IncludeNode(nodes, rootNode->GetChild(i));
@@ -32,10 +33,9 @@ CounterWeight *HierarchyCounterWeightFactory::CreateCounterWeight(const std::fil
     }
 
     auto f_nodes = builder->CreateVector(nodes);
-    auto hierarchy_offset = FbxLibra::CounterWeight::CreateHierarchy(*this->builder, f_nodes);
-    FinishHierarchyBuffer(*builder, hierarchy_offset);
-
-    auto new_hierarchy = FbxLibra::CounterWeight::GetHierarchy(builder->GetBufferPointer());
+    auto hierarchy_offset = Weight::CreateHierarchy(*this->builder, f_nodes);
+    this->builder->Finish(hierarchy_offset);
+    auto new_hierarchy = flatbuffers::GetRoot<Weight::Hierarchy>(builder->GetBufferPointer());
 
     importer->Destroy();
     scene->Destroy();
@@ -45,7 +45,7 @@ CounterWeight *HierarchyCounterWeightFactory::CreateCounterWeight(const std::fil
     return new HierarchyCounterWeight(new_hierarchy);
 }
 
-void HierarchyCounterWeightFactory::IncludeNode(std::vector<flatbuffers::Offset<FbxLibra::CounterWeight::Node>> &nodes, FbxNode *pNode, int depth) {
+void HierarchyCounterWeightFactory::IncludeNode(std::vector<flatbuffers::Offset<Weight::Node>> &nodes, FbxNode *pNode, int depth) {
     if (!pNode) return;
 
     auto node = CreateNode(pNode);
@@ -58,7 +58,7 @@ void HierarchyCounterWeightFactory::IncludeNode(std::vector<flatbuffers::Offset<
     }
 }
 
-flatbuffers::Offset<FbxLibra::CounterWeight::Node>
+flatbuffers::Offset<Weight::Node>
 HierarchyCounterWeightFactory::CreateNode(FbxNode *pNode) {
     auto node_name = this->builder->CreateString(pNode->GetName());
 
@@ -66,17 +66,17 @@ HierarchyCounterWeightFactory::CreateNode(FbxNode *pNode) {
     FbxDouble3 fbx_rot = pNode->LclRotation.Get();
     FbxDouble3 scaling = pNode->LclScaling.Get();
 
-    FbxLibra::CounterWeight::Vector3 position = FbxLibra::CounterWeight::Vector3(fbx_trans[0], fbx_trans[1], fbx_trans[2]);
-    FbxLibra::CounterWeight::Vector3 rotation = FbxLibra::CounterWeight::Vector3(fbx_rot[0], fbx_rot[1], fbx_rot[2]);
-    FbxLibra::CounterWeight::Vector3 scale = FbxLibra::CounterWeight::Vector3(scaling[0], scaling[1], scaling[2]);
+    Weight::Vector3 position = Weight::Vector3(fbx_trans[0], fbx_trans[1], fbx_trans[2]);
+    Weight::Vector3 rotation = Weight::Vector3(fbx_rot[0], fbx_rot[1], fbx_rot[2]);
+    Weight::Vector3 scale = Weight::Vector3(scaling[0], scaling[1], scaling[2]);
 
     auto transform = CreateTransform(*this->builder, &position, &rotation, &scale);
-    auto node = FbxLibra::CounterWeight::CreateNode(*this->builder, node_name, transform);
+    auto node = Weight::CreateNode(*this->builder, node_name, transform);
 
     return node;
 }
 
 CounterWeight *HierarchyCounterWeightFactory::LoadCounterWeight(const std::filesystem::path &weight_path) {
-    auto weight = FlatBufferLoader::Load(weight_path.string().c_str(), FbxLibra::CounterWeight::GetHierarchy);
+    auto weight = FlatBufferLoader::Load(weight_path.string().c_str(), flatbuffers::GetRoot<Weight::Hierarchy>);
     return new HierarchyCounterWeight(weight);
 }

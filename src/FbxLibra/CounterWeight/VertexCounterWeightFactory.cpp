@@ -4,7 +4,7 @@
 #include "../FlatBufferLoader.h"
 
 using namespace std;
-using namespace FbxLibra::CounterWeight;
+using namespace Weight;
 
 CounterWeight* VertexCounterWeightFactory::CreateCounterWeight(const std::filesystem::path& fbx_path) {
 	FbxManager* manager = FbxManager::Create();
@@ -135,9 +135,9 @@ CounterWeight* VertexCounterWeightFactory::CreateCounterWeight(const std::filesy
 	auto mesh_nodes_offsets = builder->CreateVector(mesh_node_vector);
 	auto meshes_offsets = CreateMeshes(*this->builder, mesh_nodes_offsets);
 	//Finish serializing a buffer by writing the root offset.
-	FinishMeshesBuffer(*builder, meshes_offsets);
-
-	auto ne = GetMeshes(builder->GetBufferPointer());
+    this->builder->Finish(meshes_offsets);
+//	FinishMeshesBuffer(*builder, meshes_offsets);
+	auto ne = flatbuffers::GetRoot<Weight::Meshes>(builder->GetBufferPointer());
 
 	importer->Destroy();
 	scene->Destroy();
@@ -164,6 +164,6 @@ void VertexCounterWeightFactory::IncludeMeshNodes(FbxNode* node, std::vector<Fbx
 
 
 CounterWeight* VertexCounterWeightFactory::LoadCounterWeight(const std::filesystem::path& weight_path) {
-	auto weight = FlatBufferLoader::Load(weight_path.string().c_str(), GetMeshes);
+	auto weight = FlatBufferLoader::Load(weight_path.string().c_str(), flatbuffers::GetRoot<Weight::Meshes>);
 	return new VertexCounterWeight(weight);
 }

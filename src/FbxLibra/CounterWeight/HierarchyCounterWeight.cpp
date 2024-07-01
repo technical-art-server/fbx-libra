@@ -8,7 +8,7 @@
 #include "../FlatBufferLoader.h"
 
 
-HierarchyCounterWeight::HierarchyCounterWeight(const FbxLibra::CounterWeight::Hierarchy * hierarchy) {
+HierarchyCounterWeight::HierarchyCounterWeight(const Weight::Hierarchy * hierarchy) {
     this->hierarchy = hierarchy;
 }
 

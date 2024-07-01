@@ -1,0 +1,65 @@
+namespace Weight;
+
+struct Vector2 {
+    x:double;
+    y:double;
+}
+
+struct Vector3 {
+    x:double;
+    y:double;
+    z:double;
+}
+
+struct Vector4 {
+    x:double;
+    y:double;
+    z:double;
+    w:double;
+}
+
+table Transform {
+    position: Vector3;
+    rotation: Vector3;
+    scale: Vector3;
+}
+
+table Node {
+    name: string;
+    transform: Transform;
+}
+
+table Hierarchy {
+    nodes: [Node];
+}
+
+table UV {
+    uv: [Vector2];
+}
+
+table Color {
+    r: float;
+    g: float;
+    b: float;
+    a: float;
+}
+
+table Mesh {
+    positions: [Vector3];
+    uvs: [Vector2];
+    indices: [int];
+    normals: [Vector3];
+}
+
+table MeshNode {
+    name: string;
+    transform: Transform;
+    mesh: Mesh;
+}
+
+table Meshes {
+    nodes: [MeshNode];
+}
+
+// root_type Hierarchy;
+// root_type Meshes;
