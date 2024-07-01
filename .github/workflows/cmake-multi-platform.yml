@@ -1,17 +1,28 @@
 # This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
 # See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+
+
+# TODO: FBX_SDKのパスをoutput経由で設定する
+# TODO: 7zipの依存を切ってみる。
+# TODO: PowerShellでFBX_SDKをインストールする
+
 name: FbxLibra Build with CMake on multiple platforms
 
 on:
   push:
-    branches: [ "feature/add_ci" ]
+    branches: [ "main", "feature/add_ci" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
 
+    name: Windows Build
     runs-on: windows-latest
+
+    env:
+      FBX_SDK_PATH: ${{ github.workspace }}/third_party/fbx-sdk
+      FBX_SDK_URL: https://damassets.autodesk.net/content/dam/autodesk/www/files/fbx202037_fbxsdk_vs2022_win.exe
 
     steps:
     - uses: actions/checkout@v4
@@ -19,15 +30,14 @@ jobs:
     - name: Install FBX SDK on Windows
       id: fbxsdk
       shell: cmd
+      working-directory: ${{ github.workspace }}
       run: |
         choco install 7zip
         mkdir -p ${{ github.workspace }}\third_party
-        curl -L https://damassets.autodesk.net/content/dam/autodesk/www/files/fbx202037_fbxsdk_vs2022_win.exe -o fbx202037_fbxsdk_vs2022_win.exe
-        7z x -o${{ github.workspace }}\third_party\fbx-sdk fbx202037_fbxsdk_vs2022_win.exe
-        set FBX_SDK_PATH=${{ github.workspace }}\third_party\fbx-sdk
-        echo %FBX_SDK_PATH%
-        dir ${{ github.workspace }}\third_party\fbx-sdk
-        echo "fbx-sdk-path=${{ github.workspace }}\third_party\fbx-sdk" >> "$GITHUB_OUTPUT"
+        curl -L ${{ env.FBX_SDK_URL }} -o fbx202037_fbxsdk_vs2022_win.exe
+        7z x -o${{ env.FBX_SDK_PATH }} fbx202037_fbxsdk_vs2022_win.exe
+        dir ${{ env.FBX_SDK_PATH }}
+        echo "fbx-sdk-path=${{ env.FBX_SDK_PATH }}" >> "$GITHUB_OUTPUT"
 
     - name: Install Conan
       id: conan
@@ -45,7 +55,7 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DFBX_SDK_ROOT=${{ github.workspace }}\third_party\fbx-sdk
+        -DFBX_SDK_ROOT=${{ env.FBX_SDK_PATH }}
         -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=${{ github.workspace }}\conan_provider.cmake
         -DCMAKE_BUILD_TYPE=Release
         -S ${{ github.workspace }}
