@@ -21,7 +21,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      FBX_SDK_PATH: ${{ github.workspace }}/third_party/fbx-sdk
+      FBX_SDK_PATH: ${{ github.workspace }}\third_party\fbx-sdk
       FBX_SDK_URL: https://damassets.autodesk.net/content/dam/autodesk/www/files/fbx202037_fbxsdk_vs2022_win.exe
 
     steps:
