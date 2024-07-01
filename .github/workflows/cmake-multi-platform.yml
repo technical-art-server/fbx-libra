@@ -5,6 +5,7 @@
 # TODO: FBX_SDKのパスをoutput経由で設定する
 # TODO: 7zipの依存を切ってみる。
 # TODO: PowerShellでFBX_SDKをインストールする
+# TODO: Conanのインストールを外部への依存をやめる（actでのテストができないため）
 
 name: FbxLibra Build with CMake on multiple platforms
 
