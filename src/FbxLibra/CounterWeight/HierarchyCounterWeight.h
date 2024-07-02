@@ -6,17 +6,17 @@
 #define ALL_HIERARCHYCOUNTERWEIGHT_H
 
 #include <fbxsdk.h>
-#include "hcw_generated.h"
+#include "cw_generated.h"
 #include "CounterWeight.h"
 
 class HierarchyCounterWeight: public CounterWeight {
 
 public:
-    explicit HierarchyCounterWeight(const FbxLibra::CounterWeight::Hierarchy* hierarchy);
+    explicit HierarchyCounterWeight(const Weight::Hierarchy* hierarchy);
     [[nodiscard]] bool EqualCounterWeight(const CounterWeight& other) const override;
 
 private:
-    const FbxLibra::CounterWeight::Hierarchy* hierarchy;
+    const Weight::Hierarchy* hierarchy;
 };
 
 #endif //ALL_HIERARCHYCOUNTERWEIGHT_H

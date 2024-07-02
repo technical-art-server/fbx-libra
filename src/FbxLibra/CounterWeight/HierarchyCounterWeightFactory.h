@@ -8,14 +8,14 @@
 
 #include <fbxsdk.h>
 #include "CounterWeightFactory.h"
-#include "hcw_generated.h"
+#include "cw_generated.h"
 
 class HierarchyCounterWeightFactory: public CounterWeightFactory{
 private:
     CounterWeight* CreateCounterWeight(const std::filesystem::path& fbx_path) override;
     CounterWeight* LoadCounterWeight(const std::filesystem::path& weight_path) override;
-    flatbuffers::Offset<FbxLibra::CounterWeight::Node> CreateNode(FbxNode* pNode);
-    void IncludeNode(std::vector<flatbuffers::Offset<FbxLibra::CounterWeight::Node>>& nodes, FbxNode* pNode, int depth = 0);
+    flatbuffers::Offset<Weight::Node> CreateNode(FbxNode* pNode);
+    void IncludeNode(std::vector<flatbuffers::Offset<Weight::Node>>& nodes, FbxNode* pNode, int depth = 0);
 };
 
 
