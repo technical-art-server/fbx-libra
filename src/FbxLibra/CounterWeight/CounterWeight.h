@@ -10,6 +10,15 @@
 #include "../Status.h"
 #include <filesystem>
 
+template<typename T>
+bool CompareFlatBuffersVector(const flatbuffers::Vector<T>* vec1, const flatbuffers::Vector<T>* vec2) {
+    if (vec1->size() != vec2->size()) {
+        return false;
+    }
+    // memcmpで連続メモリのByte差分の比較をする
+    return std::memcmp(vec1->Data(), vec2->Data(), vec1->size() * sizeof(T)) == 0;
+}
+
 class CounterWeight {
 public:
     /* @fn
