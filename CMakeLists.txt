@@ -16,3 +16,7 @@ enable_testing()
 include(cmake/gtest.cmake)
 add_subdirectory(test)
 add_dependencies(TEST generate_flatbuffers_code)
+
+
+# CPackの設定をインクルード
+include(CPack)
