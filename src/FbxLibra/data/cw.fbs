@@ -61,5 +61,25 @@ table Meshes {
     nodes: [MeshNode];
 }
 
+table Skin {
+    vertex_index: int;
+    weight: double;
+}
+
+table SkinCluster {
+   skins: [Skin];
+}
+
+table SkinWeight {
+    mesh_name: string;
+    clusters: [SkinCluster];
+}
+
+table SkinWeights {
+    weights: [SkinWeight];
+}
+
+
 // root_type Hierarchy;
 // root_type Meshes;
+// root_type SkinWeight;
