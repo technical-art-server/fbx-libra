@@ -31,6 +31,10 @@ add_executable(${PROJECT_NAME}
     ../src/FbxLibra/CounterWeight/CounterWeightFactory.h
     ../src/FbxLibra/CounterWeight/HierarchyCounterWeightFactory.h
     ../src/FbxLibra/CounterWeight/HierarchyCounterWeightFactory.cpp
+    ../src/FbxLibra/CounterWeight/SkinWeightCounterWeight.h
+    ../src/FbxLibra/CounterWeight/SkinWeightCounterWeight.cpp
+    ../src/FbxLibra/CounterWeight/SkinWeightCounterWeightFactory.h
+    ../src/FbxLibra/CounterWeight/SkinWeightCounterWeightFactory.cpp
     ../src/FbxLibra/CounterWeight/VertexCounterWeight.h
     ../src/FbxLibra/CounterWeight/VertexCounterWeight.cpp
     ../src/FbxLibra/CounterWeight/VertexCounterWeightFactory.h
@@ -40,6 +44,7 @@ add_executable(${PROJECT_NAME}
     gtest_sample.cpp
     gtest_create_hierarchy.cpp
     gtest_vertex.cpp
+    gtest_skin_weight.cpp
 )
 
 target_link_libraries(

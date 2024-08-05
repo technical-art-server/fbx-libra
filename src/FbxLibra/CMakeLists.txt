@@ -32,6 +32,10 @@ set(SOURCE_FILES
         CounterWeight/VertexCounterWeight.cpp
         CounterWeight/VertexCounterWeightFactory.h
         CounterWeight/VertexCounterWeightFactory.cpp
+        CounterWeight/SkinWeightCounterWeight.h
+        CounterWeight/SkinWeightCounterWeight.cpp
+        CounterWeight/SkinWeightCounterWeightFactory.h
+        CounterWeight/SkinWeightCounterWeightFactory.cpp
 )
 
 # 実行ファイルを生成

@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "VertexCounterWeight.h"
 #include "VertexCounterWeightFactory.h"
 #include "../FlatBufferLoader.h"
@@ -134,6 +134,7 @@ CounterWeight* VertexCounterWeightFactory::CreateCounterWeight(const std::filesy
 
 	auto mesh_nodes_offsets = builder->CreateVector(mesh_node_vector);
 	auto meshes_offsets = CreateMeshes(*this->builder, mesh_nodes_offsets);
+
 	//Finish serializing a buffer by writing the root offset.
     this->builder->Finish(meshes_offsets);
 //	FinishMeshesBuffer(*builder, meshes_offsets);
@@ -164,6 +165,6 @@ void VertexCounterWeightFactory::IncludeMeshNodes(FbxNode* node, std::vector<Fbx
 
 
 CounterWeight* VertexCounterWeightFactory::LoadCounterWeight(const std::filesystem::path& weight_path) {
-	auto weight = FlatBufferLoader::Load(weight_path.string().c_str(), flatbuffers::GetRoot<Weight::Meshes>);
+	auto weight = FlatBufferLoader::Load<Weight::Meshes>(weight_path.string().c_str());
 	return new VertexCounterWeight(weight);
 }
