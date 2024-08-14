@@ -16,7 +16,7 @@ public:
     /// <summary>
     /// チェックする
     /// </summary>
-    static Status Weigh(CounterWeight* weight, CounterWeight* fbx_weight);
+    static Status Weigh(CounterWeight* weight, const CounterWeight* fbx_weight);
 };
 
 

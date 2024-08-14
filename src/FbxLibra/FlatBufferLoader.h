@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by Tack2 on 2024/06/03.
 //
 
@@ -10,11 +10,11 @@
 class FlatBufferLoader {
 public:
     template<typename T>
-    static T* Load(const char *file_path, T* (func)(const void*));
+    static const T* Load(const char *file_path);
 };
 
 
-template<typename T> T* FlatBufferLoader::Load(const char *file_path, T* (func)(const void *)) {
+template<class T> const T* FlatBufferLoader::Load(const char *file_path) {
     std::ifstream fin(file_path, std::ios::in | std::ios::binary);
     if (!fin) {
         return nullptr;
@@ -30,7 +30,7 @@ template<typename T> T* FlatBufferLoader::Load(const char *file_path, T* (func)(
     fin.read(buf, len);
     fin.close();
 
-    return func((uint8_t*)buf);
+    return flatbuffers::GetRoot<T>((uint8_t*)buf);;
 }
 
 #endif //ALL_FLATBUFFERLOADERR_H

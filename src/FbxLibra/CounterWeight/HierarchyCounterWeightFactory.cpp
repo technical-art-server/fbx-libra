@@ -77,6 +77,6 @@ HierarchyCounterWeightFactory::CreateNode(FbxNode *pNode) {
 }
 
 CounterWeight *HierarchyCounterWeightFactory::LoadCounterWeight(const std::filesystem::path &weight_path) {
-    auto weight = FlatBufferLoader::Load(weight_path.string().c_str(), flatbuffers::GetRoot<Weight::Hierarchy>);
+    auto weight = FlatBufferLoader::Load<Weight::Hierarchy>(weight_path.string().c_str());
     return new HierarchyCounterWeight(weight);
 }
