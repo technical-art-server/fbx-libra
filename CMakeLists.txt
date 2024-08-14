@@ -7,6 +7,7 @@ include(cmake/flatbuffer.cmake)
 
 add_subdirectory(examples/EncodeSample)
 add_subdirectory(examples/DecodeSample)
+add_subdirectory(examples/FbxSample)
 add_subdirectory(src/FbxLibra)
 add_dependencies(FbxLibra generate_flatbuffers_code)
 
