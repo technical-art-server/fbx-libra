@@ -2,26 +2,20 @@
 #include "VertexCounterWeight.h"
 #include "VertexCounterWeightFactory.h"
 #include "../FlatBufferLoader.h"
+#include "../FbxClient.h"
 
 using namespace std;
 using namespace Weight;
 
 CounterWeight* VertexCounterWeightFactory::CreateCounterWeight(const std::filesystem::path& fbx_path) {
-	FbxManager* manager = FbxManager::Create();
-	FbxIOSettings* ios = FbxIOSettings::Create(manager, IOSROOT);
-	manager->SetIOSettings(ios);
-
-	FbxImporter* importer = FbxImporter::Create(manager, "");
-
-	if (!importer->Initialize(fbx_path.string().c_str(), -1, manager->GetIOSettings())) {
-		std::cerr << "Failed to initialize FBX importer: " << importer->GetStatus().GetErrorString() << std::endl;
-		return nullptr;
+	FbxClient client;
+	if (!client.Load(fbx_path))
+	{
+		std::cerr << "Failed to load FBX file: " << fbx_path << std::endl;
+		return  nullptr;
 	}
 
-	FbxScene* scene = FbxScene::Create(manager, "Scene");
-	importer->Import(scene);
-
-	FbxNode* rootNode = scene->GetRootNode();
+	FbxNode* rootNode = client.GetRootNode();
 
 	//scene内のMeshノードを取得
 	std::vector<FbxNode*> mesh_nodes;
@@ -139,11 +133,6 @@ CounterWeight* VertexCounterWeightFactory::CreateCounterWeight(const std::filesy
     this->builder->Finish(meshes_offsets);
 //	FinishMeshesBuffer(*builder, meshes_offsets);
 	auto ne = flatbuffers::GetRoot<Weight::Meshes>(builder->GetBufferPointer());
-
-	importer->Destroy();
-	scene->Destroy();
-	ios->Destroy();
-	manager->Destroy();
 
 	return new VertexCounterWeight(ne);;
 }

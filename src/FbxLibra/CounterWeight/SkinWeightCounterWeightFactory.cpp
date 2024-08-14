@@ -9,22 +9,20 @@
 #include "../FlatBufferLoader.h"
 #include "cw_generated.h"
 #include "SkinWeightCounterWeight.h"
+#include "../FbxClient.h"
+#include "fbxsdk.h"
+
 
 CounterWeight *SkinWeightCounterWeightFactory::CreateCounterWeight(const std::filesystem::path &fbx_path) {
-    FbxManager* manager = FbxManager::Create();
-    FbxIOSettings* ios = FbxIOSettings::Create(manager, IOSROOT);
-    manager->SetIOSettings(ios);
-
-    FbxImporter* importer = FbxImporter::Create(manager, "");
-    if (!importer->Initialize(fbx_path.string().c_str(), -1, manager->GetIOSettings())) {
-        std::cerr << "Failed to initialize FBX importer: " << importer->GetStatus().GetErrorString() << std::endl;
-        return nullptr;
+    FbxClient client;
+    if (!client.Load(fbx_path))
+    {
+        std::cerr << "Failed to load FBX file: " << fbx_path << std::endl;
+        return  nullptr;
     }
-    FbxScene* scene = FbxScene::Create(manager, "Scene");
-    importer->Import(scene);
 
     std::vector<flatbuffers::Offset<Weight::SkinWeight>> skinWeightList;
-    FbxNode* rootNode = scene->GetRootNode();
+    FbxNode* rootNode = client.GetRootNode();
     if (rootNode)
     {
         ProcessNode(rootNode, skinWeightList);

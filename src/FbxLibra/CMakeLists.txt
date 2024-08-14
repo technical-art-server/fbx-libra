@@ -18,6 +18,7 @@ set(SOURCE_FILES
         main.cpp
         Status.h
         FlatBufferLoader.h
+        FbxClient.h
         FBXLibra.h
         FBXLibra.cpp
         CounterWeight/HierarchyCounterWeight.h

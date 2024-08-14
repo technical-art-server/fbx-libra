@@ -6,24 +6,18 @@
 #include "HierarchyCounterWeightFactory.h"
 #include "HierarchyCounterWeight.h"
 #include "../FlatBufferLoader.h"
+#include "../FbxClient.h"
 #include "flatbuffers/flatbuffers.h"
 
 CounterWeight *HierarchyCounterWeightFactory::CreateCounterWeight(const std::filesystem::path &fbx_path) {
-    FbxManager* manager = FbxManager::Create();
-    FbxIOSettings* ios = FbxIOSettings::Create(manager, IOSROOT);
-    manager->SetIOSettings(ios);
-
-    FbxImporter* importer = FbxImporter::Create(manager, "");
-
-    if (!importer->Initialize(fbx_path.string().c_str(), -1, manager->GetIOSettings())){
-        std::cerr << "Failed to initialize FBX importer: " << importer->GetStatus().GetErrorString() << std::endl;
-        return nullptr;
+    FbxClient client;
+    if (!client.Load(fbx_path))
+    {
+        std::cerr << "Failed to load FBX file: " << fbx_path << std::endl;
+        return  nullptr;
     }
 
-    FbxScene* scene = FbxScene::Create(manager, "Scene");
-    importer->Import(scene);
-
-    FbxNode* rootNode = scene->GetRootNode();
+    FbxNode* rootNode = client.GetRootNode();
 
     std::vector<flatbuffers::Offset<Weight::Node>> nodes;
     if (rootNode){
@@ -36,11 +30,6 @@ CounterWeight *HierarchyCounterWeightFactory::CreateCounterWeight(const std::fil
     auto hierarchy_offset = Weight::CreateHierarchy(*this->builder, f_nodes);
     this->builder->Finish(hierarchy_offset);
     auto new_hierarchy = flatbuffers::GetRoot<Weight::Hierarchy>(builder->GetBufferPointer());
-
-    importer->Destroy();
-    scene->Destroy();
-    ios->Destroy();
-    manager->Destroy();
 
     return new HierarchyCounterWeight(new_hierarchy);
 }

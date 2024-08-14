@@ -22,6 +22,7 @@ configure_file(
 
 add_executable(${PROJECT_NAME}
     ../src/FbxLibra/Status.h
+    ../src/FbxLibra/FbxClient.h
     ../src/FbxLibra/FlatBufferLoader.h
     ../src/FbxLibra/FBXLibra.h
     ../src/FbxLibra/FBXLibra.cpp
